@@ -97,13 +97,13 @@ form.addEventListener("submit",(e) => {
     const [r,g,b] = pickr.getColor().toRGBA()
     const score = getColorScore([r,g,b],questionColor)
     console.log(score)
+    showColor(...questionColor)
     if(score < modeToCorrectScore[mode]){
         failed()
     }
     else{
         correct(score)
     }
-    showColor(...questionColor)
 })
 
 async function fetchJson(link){
