@@ -1,0 +1,203 @@
+body {
+    font-size: 15pt;
+    background-image:linear-gradient(to bottom right,var(--input-color),var(--base-color));
+    background-size: cover;
+    background-repeat: no-repeat;
+    height:100%;
+    background-attachment: fixed;
+    padding:0;
+    margin:0;
+}
+
+html{
+  height:100%
+}
+
+* {
+  box-sizing:border-box;
+}
+
+:root{
+  --base-color:#2F294A;
+  --main-color:#2a1885;
+  --accent-color:#EBBC2C;
+  --background-color:#0a061d;
+  --text-color: #eeeeee;
+  --input-color: #000000
+}
+
+main {
+  margin:1rem;
+  display:grid;
+  grid-template-columns: repeat(4,1fr);
+  grid-template-rows: repeat(3,1fr);
+  grid-template-areas: "question question question question" ". form form ." "result result result result" "select-mode select-mode select-mode select-mode" "description description description description";
+  gap:1rem;
+  
+}
+
+#form button[type="submit"]{
+    border-radius:4px;
+    background-color:var(--accent-color);
+    border: var(--accent-color) solid 1rem;
+    width:12rem;
+    height:6rem;
+    grid-area: submit;
+    margin:1rem;
+    font-size:150%;
+    font-weight:bold;
+    align-self: center;
+    justify-self: center;
+}
+
+#form {
+    display:grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(2,1fr);
+    grid-template-areas: "picker" "submit";
+    grid-area:form;
+}
+
+#form .color-picker-container{
+  grid-area:"picker";
+  align-self: center;
+  justify-self: center;
+}
+
+#form .pcr-button{
+  width:10rem;
+  height:8rem;
+}
+
+.result{
+  border-radius:16px;
+  grid-area:result;
+  display:grid;
+  grid-template-columns: repeat(2,1fr);
+  grid-template-rows: repeat(2,1fr);
+  grid-template-areas: "status point" "show-color show-color";
+  background-color:var(--base-color);
+  justify-items: center;
+  align-items: center;
+  gap:1rem;
+  padding:1rem;
+}
+
+.point{
+  justify-self: right;
+  text-align:right;
+  display:block;
+  min-width:8rem;
+  padding:0.5rem;
+  grid-area:point;
+  border-radius:4px;
+  background-color:var(--main-color);
+  color:var(--text-color);
+}
+
+.status{
+  grid-area:status;
+  justify-self:left;
+}
+
+.show-color{
+  width:100%;
+  height:100%;
+  padding:0.3rem;
+  grid-area: show-color;
+  text-align:center;
+  background-color:var(--color);
+  border-radius:4px
+}
+
+.question{
+  grid-area: question;
+  display:grid;
+  text-align:center;
+  align-items:center;
+  background-color:var(--main-color);
+  border-radius:16px;
+}
+
+.question-color{
+  font-weight:bold;
+  font-size:700%;
+}
+
+.failed{
+  animation: failed 1s ease-in;
+}
+
+@keyframes failed{
+  from{
+    border-color: red;
+  }
+  to{
+    border-color: var(--accent-color);
+  }
+}
+
+.correct{
+  animation: correct 1s ease-in;
+}
+
+@keyframes correct{
+  from{
+    border-color: green;
+  }
+  to{
+    border-color: var(--accent-color);
+  }
+}
+
+.select-mode{
+  background-color:var(--base-color);
+  padding:2rem 1rem;
+  border-radius:16px;
+  grid-area:select-mode;
+  display:grid;
+  height:10rem;
+  grid-template-columns: repeat(3,1fr);
+  grid-template-rows: 1fr;
+  grid-template-areas: "easy normal hard";
+  gap:1rem;
+}
+
+.select-mode button:nth-child(1){
+  grid-area:easy;
+  background-color: greenyellow;
+  color:#111111;
+}
+
+.select-mode button:nth-child(2){
+  grid-area:normal;
+  background-color: #ffd400;
+  color: #111111;
+}
+
+.select-mode button:nth-child(3){
+  grid-area:hard;
+  background-color: #cc0000
+}
+
+.select-mode button{
+  background-color:var(--main-color);
+  border-radius:8px;
+  border:none;
+  font-size:80%;
+  font-weight: bold;
+  color:var(--text-color);
+}
+
+.select-mode button:active{
+  transform: scale(1.1);
+  transition: 0.3s;
+}
+
+.description{
+  grid-area:description;
+  padding:1rem;
+  background-color:var(--base-color);
+  border-radius:16px;
+  color:var(--text-color);
+}

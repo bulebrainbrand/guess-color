@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>HTML</title>
+<!-- One of the following themes -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/classic.min.css"/> <!-- 'classic' theme -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/monolith.min.css"/> <!-- 'monolith' theme -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/nano.min.css"/> <!-- 'nano' theme -->
+
+<!-- Modern or es5 bundle -->
+<script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.js"></script>
+  <!-- HTML -->
+  
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <main>
+    <div class="question">
+      <span id="question-text"class="question-color">赤色</span>
+    </div>
+    <form id="form">
+      <div class="color-picker-container"><div class="color-picker"></div></div>
+      <button type="submit" id="submit">決定!</button>
+    </form>
+    <div class="result">
+      <span id="score" class="point">15</span>
+      <span id="health" class="status">♥️♥️♥️</span>
+      <div id="show-color" class="show-color">
+      </div>
+    </div>
+    <div class="select-mode">
+      <button id="easy-button" type="button">かんたん</button>
+      <button id="normal-button" type="button">ふつう</button>
+      <button id="hard-button" type="button">むずかしい</button>
+    </div>
+    <div class="description">
+      <h2>遊び方</h2>
+      <p>一番上に色の名前が表示されます</p>
+      <p>その下にある白色の正方形を押すと、色が選択できます</p>
+      <p>名前から色を推測し、決定をクリック！</p>
+      <p>合っていればボタンが緑に光りスコアが増え、外れていればボタンが赤に光りハートが減ります</p>
+      <p>高スコアを目指そう!</p>
+    </div>
+  </main>
+  <script src="main.js"></script>
+</body>
+</html>
