@@ -14,12 +14,12 @@ let mode = 0
 let health = 3
 let questionColor = null
 let currentScore = 0
-
+let questionColorName = null
 
 const pickr = Pickr.create({
     el: '.color-picker',
     theme: 'classic',
-    default: '#eeeeee',
+    default: '#EBBC2C',
     swatches: [],
     components:{
         preview: true,
@@ -41,7 +41,9 @@ pickr.on("change",(color) => {
   document.documentElement.style.setProperty("--input-color",`rgb(${r/2},${g/2},${b/2})`)
 })
 
-function showColor(r,g,b){
+function showColor(name,r,g,b){
+    const text = document.getElementById("result-color-name")
+    text.textContent = name
     const div = document.getElementById("show-color")
     div.style.setProperty("--color",`rgb(${r},${g},${b})`)
 }
@@ -59,6 +61,22 @@ function reRenderingScore(score){
     document.getElementById("score").textContent = score
 }
 
+function showCorrect(){
+    const frame = document.getElementById("frame")
+    frame.classList.remove("correct")
+    frame.classList.remove("failed")
+    frame.offsetWidth
+    frame.classList.add("correct")
+}
+
+function showFailed(){
+    const frame = document.getElementById("frame")
+    frame.classList.remove("correct")
+    frame.classList.remove("failed")
+    frame.offsetWidth
+    frame.classList.add("failed")
+}
+
 async function nextQuestion(){
     if(colorData == null)await load()
     const keys = Object.keys(colorData)
@@ -66,6 +84,7 @@ async function nextQuestion(){
     const questionText = document.getElementById("question-text")
     questionText.textContent = key
     questionColor = colorData[key]
+    questionColorName = key
 }
 
 function failed(){
@@ -75,20 +94,14 @@ function failed(){
       return;
     }
     reRenderingHealth(health)
-    submitButton.classList.remove("correct")
-    submitButton.classList.remove("failed")
-    submitButton.offsetWidth
-    submitButton.classList.add("failed")
+    showFailed()
     nextQuestion()
 }
 
 function correct(score){
     currentScore+=score
     reRenderingScore(currentScore)
-    submitButton.classList.remove("correct")
-    submitButton.classList.remove("failed")
-    submitButton.offsetWidth
-    submitButton.classList.add("correct")
+    showCorrect()
     nextQuestion()
 }
 
@@ -96,8 +109,7 @@ form.addEventListener("submit",(e) => {
     e.preventDefault()
     const [r,g,b] = pickr.getColor().toRGBA()
     const score = getColorScore([r,g,b],questionColor)
-    console.log(score)
-    showColor(...questionColor)
+    showColor(questionColorName,...questionColor)
     if(score < modeToCorrectScore[mode]){
         failed()
     }
@@ -124,6 +136,7 @@ function start() {
   reRenderingHealth(health)
   submitButton.style = ""
   nextQuestion()
+  showColor("ここに前回の答えが表示されます",0,0,0)
 }
 
 function end(){
@@ -165,7 +178,5 @@ hardButton.addEventListener("click",e => {
 })
 
 load()
-
-showColor(0,0,0)
 
 start()

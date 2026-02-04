@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=Edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>色当てゲーム</title>
+  <title>HTML</title>
 <!-- One of the following themes -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/classic.min.css"/> <!-- 'classic' theme -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/monolith.min.css"/> <!-- 'monolith' theme -->
@@ -21,6 +21,11 @@
 </head>
 
 <body>
+  <div id="frame" class="frame"></div>
+  <header>
+    <span id="health" class="status">♥️♥️♥️</span>
+    <span id="score" class="point">15</span>
+  </header>
   <main>
     <div class="question">
       <span id="question-text"class="question-color">赤色</span>
@@ -30,8 +35,7 @@
       <button type="submit" id="submit">決定!</button>
     </form>
     <div class="result">
-      <span id="score" class="point">15</span>
-      <span id="health" class="status">♥️♥️♥️</span>
+      <h2 id="result-color-name"></h2>
       <div id="show-color" class="show-color">
       </div>
     </div>
@@ -43,9 +47,9 @@
     <div class="description">
       <h2>遊び方</h2>
       <p>一番上に色の名前が表示されます</p>
-      <p>その下にある白色の正方形を押すと、色が選択できます</p>
+      <p>その下にある黄色の長方形を押すと、色が選択できます</p>
       <p>名前から色を推測し、決定をクリック！</p>
-      <p>合っていればボタンが緑に光りスコアが増え、外れていればボタンが赤に光りハートが減ります</p>
+      <p>３回間違えるとゲームオーバー</p>
       <p>高スコアを目指そう!</p>
     </div>
   </main>
