@@ -1,6 +1,6 @@
 body {
     font-size: 15pt;
-    background-image:linear-gradient(to bottom right,var(--input-color),var(--base-color));
+    background-image:linear-gradient(to bottom,var(--input-color),var(--base-color));
     background-size: cover;
     background-repeat: no-repeat;
     height:100%;
@@ -48,6 +48,7 @@ main {
     font-weight:bold;
     align-self: center;
     justify-self: center;
+    box-shadow: 5px 5px 10px rgba(0,0,0,0.5); 
 }
 
 #form {
@@ -62,6 +63,7 @@ main {
   grid-area:"picker";
   align-self: center;
   justify-self: center;
+  position: relative;
 }
 
 #form .pcr-button{
@@ -98,15 +100,21 @@ main {
 }
 
 .question{
+  position: relative;
   grid-area: question;
   display:grid;
   text-align:center;
   align-items:center;
-  background-color:var(--main-color);
+  background-color:var(--base-color);
   border-radius:16px;
+  gap:0;
+  grid-template-rows: 0.5fr 3fr 0.8fr;
+  grid-template-columns: 1fr;
+  grid-template-areas: "subText" "question-color" "";
 }
 
 .question-color{
+  grid-area:"question-color";
   font-weight:bold;
   font-size:500%;
 }
@@ -195,8 +203,9 @@ header{
   width:100vw;
   position: sticky;
   background-color:#111111cc;
-  padding:1rem 0;
+  padding:1rem 1.2rem;
   top:0;
+  z-index:500;
 }
 
 .frame {
@@ -209,4 +218,41 @@ header{
   height:100vh;
   pointer-events: none;
   z-index: 9999;
+}
+
+.color-picker-text{
+  position: absolute;
+  top:40%;
+  left:30%;
+  z-index:1;
+  font-weight: bold;
+  pointer-events: none;
+}
+
+.pcr-app{
+  position: absolute;
+  top:550px !important;
+}
+.pcr-hue{
+  width:70px!important;
+  border-radius: 0 !important;
+}
+
+.question-color-sub-text{
+  grid-area:"subText";
+  margin-left:auto;
+  margin-right:auto;
+  margin-bottom:0;
+  padding:0;
+  font-size:160%;
+  position: relative;
+  top:25px;
+  font-weight: bold;
+}
+
+.status{
+  font-size:150%;
+  background-color:var(--base-color);
+  padding:0.3rem;
+  border-radius:4px;
 }

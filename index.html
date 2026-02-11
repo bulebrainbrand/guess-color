@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=Edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>色当てゲーム</title>
+  <title>HTML</title>
 <!-- One of the following themes -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/classic.min.css"/> <!-- 'classic' theme -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/monolith.min.css"/> <!-- 'monolith' theme -->
@@ -28,11 +28,15 @@
   </header>
   <main>
     <div class="question">
+      <span id="question-sub-text" class="question-color-sub-text">abcdefg</span>
       <span id="question-text"class="question-color">赤色</span>
+      はどんな色?
     </div>
     <form id="form">
-      <div class="color-picker-container"><div class="color-picker"></div></div>
-      <button type="submit" id="submit">決定!</button>
+      <div class="color-picker-container">
+        <span class="color-picker-text">色を選択</span>
+        <div class="color-picker"></div></div>
+      <button type="submit" id="submit">回答</button>
     </form>
     <div class="result">
       <h2 id="result-color-name"></h2>

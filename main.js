@@ -1,6 +1,6 @@
 const modeToCorrectScore = {
-    0:70,
-    1:80,
+    0:60,
+    1:75,
     2:90
 }
 const modeToStr = {
@@ -19,7 +19,7 @@ let questionColorName = null
 const pickr = Pickr.create({
     el: '.color-picker',
     theme: 'classic',
-    default: '#EBBC2C',
+    default: '#cccccc',
     swatches: [],
     components:{
         preview: true,
@@ -38,19 +38,61 @@ pickr.on("change",(color) => {
   const [r,g,b,a] = color.toRGBA()
   submitButton.style.backgroundColor = color.toRGBA().toString()
   submitButton.style.color = `rgb(${255-r},${255-g},${255-b})`
-  document.documentElement.style.setProperty("--input-color",`rgb(${r/2},${g/2},${b/2})`)
+  document.documentElement.style.setProperty("--input-color",`rgb(${r},${g},${b})`)
 })
 
-function showColor(name,r,g,b){
+function showColor(name,r,g,b,isCorrect){
     const text = document.getElementById("result-color-name")
-    text.textContent = name
+    if(name === "default"){
+        text.textContent = "ここに前回の答えが表示されます"
+    }
+    else{
+    text.textContent = `${isCorrect?"🟢正解!":"❌不正解!"} ${name}は:`}
     const div = document.getElementById("show-color")
     div.style.setProperty("--color",`rgb(${r},${g},${b})`)
 }
 
-function getColorScore([r1,g1,b1],[r2,g2,b2]){
-    const distance = Math.hypot(r1-r2,g1-g2,b1-b2)
-    return 100-Math.max(0,Math.min(Math.floor(distance / 4.42),100)) // 0-100のあいだにする
+/**
+ * RGBをLabに変換し、色差(Delta E)を0-100で返す
+ */
+function getColorScore(rgb1, rgb2) {
+    console.log(rgb1,rgb2)
+    const lab1 = rgbToLab(rgb1);
+    const lab2 = rgbToLab(rgb2);
+
+    const dL = lab1[0] - lab2[0];
+    const da = lab1[1] - lab2[1];
+    const db = lab1[2] - lab2[2];
+
+    const deltaE = Math.sqrt(dL * dL + da * da + db * db);
+
+    // Delta E (CIE76) の最大値は約100〜115程度ですが、
+    // 実用上は100でキャップ（または正規化）するのが一般的です
+    console.log(100-(deltaE / 1.15))
+    return Math.floor(100-(deltaE / 1.15));
+}
+
+// 内部関数: RGB -> XYZ -> Lab への変換
+function rgbToLab([r, g, b]) {
+    // 1. RGB (0-255) を 0-1 への正規化とガンマ補正
+    let [R, G, B] = [r, g, b].map(v => {
+        v /= 255;
+        return v > 0.04045 ? Math.pow((v + 0.055) / 1.055, 2.4) : v / 12.92;
+    });
+
+    // 2. XYZ空間へ変換 (D65光源)
+    let x = (R * 0.4124 + G * 0.3576 + B * 0.1805) / 0.95047;
+    let y = (R * 0.2126 + G * 0.7152 + B * 0.0722) / 1.00000;
+    let z = (R * 0.0193 + G * 0.1192 + B * 0.9505) / 1.08883;
+
+    // 3. Lab空間へ変換
+    const f = t => t > 0.008856 ? Math.pow(t, 1/3) : (7.787 * t) + (16/116);
+    
+    const L = (116 * f(y)) - 16;
+    const a = 500 * (f(x) - f(y));
+    const b_val = 200 * (f(y) - f(z));
+
+    return [L, a, b_val];
 }
 
 function reRenderingHealth(health){
@@ -79,11 +121,13 @@ function showFailed(){
 
 async function nextQuestion(){
     if(colorData == null)await load()
-    const keys = Object.keys(colorData)
+    const keys = Object.keys(colorData[mode])
     const key = keys[Math.floor(Math.random() * keys.length)]
     const questionText = document.getElementById("question-text")
+    const questionSubText = document.getElementById("question-sub-text")
+    questionSubText.textContent = colorData[mode][key][3]
     questionText.textContent = key
-    questionColor = colorData[key]
+    questionColor = colorData[mode][key].slice(0,3)
     questionColorName = key
 }
 
@@ -109,12 +153,14 @@ form.addEventListener("submit",(e) => {
     e.preventDefault()
     const [r,g,b] = pickr.getColor().toRGBA()
     const score = getColorScore([r,g,b],questionColor)
-    showColor(questionColorName,...questionColor)
-    if(score < modeToCorrectScore[mode]){
-        failed()
+    const isCorrect = score >= modeToCorrectScore[mode]
+    showColor(questionColorName,...questionColor,isCorrect)
+    if(isCorrect){
+        correct(score)
+        
     }
     else{
-        correct(score)
+        failed()
     }
 })
 
@@ -136,7 +182,7 @@ function start() {
   reRenderingHealth(health)
   submitButton.style = ""
   nextQuestion()
-  showColor("ここに前回の答えが表示されます",0,0,0)
+  showColor("default",0,0,0)
 }
 
 function end(){
@@ -176,7 +222,5 @@ hardButton.addEventListener("click",e => {
 });
   start()
 })
-
-load()
 
 start()
